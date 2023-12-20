@@ -38,16 +38,16 @@ def authors_links():
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
 
-    full_links = []
+    full_links = set()
 
     # find all elements where href starts with /author/:
-    relative_links = soup.find_all("a", href=lambda x: x and x.startswith("/author/"))
+    relative_links = soup.find_all("a", href=lambda x: x.startswith("/author/"))
     for el in relative_links:
         matches = re.findall(r'"(.*?)"', str(el))
         for match in matches:
-            full_links.append(url + match.lstrip("/"))
+            full_links.add(url + match.lstrip("/"))
 
-    return full_links
+    print(full_links)
 
 
 def authors_to_json(full_links):
@@ -88,5 +88,6 @@ def authors_to_json(full_links):
 
 
 if __name__ == "__main__":
-    quotes_to_json()
-    authors_to_json(authors_links())
+    # quotes_to_json()
+    # authors_to_json(authors_links())
+    authors_links()
